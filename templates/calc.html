@@ -51,45 +51,72 @@
 
 <!-- Design on bootstrap grid -->
 <form role="form">
+<div class ="Brevet col-xs-14">
+<label = class = "col-xs-3">Brevet:</label>
+  <select class = "control-label col-md-2" id="Brevet">
+          <option>200</option>
+          <option>300</option>
+          <option>400</option>
+          <option>600</option>
+          <option>1000</option>
+  </select>
+</div>
+<br><br>
+<div class = "day_time col-xs-14">
+  <label class = "col-xs-3"> Typing day and time:</label>
+      <input class="col-md-2" id = "day" placeholder = "MM/DD/YYYY">
+      <input class="col-md-2" id = "time" placeholder = "HH:MM">
+</div>
+<div class = "Unit col-xs-14">
+  <label class = "col-xs-3">Unit:</label>
+  <select class = "control-label col-md-2" id ="dis_type">
+    <option>Miles</option>
+    <option>Kilometers</option>
+  </select>
+</div>
+<br><br>
 <div class="row">
   <div class="col-md-2">
     <input type="text" class="form-control"
-     name="miles" value="Distance in miles"/>
+     name="miles" placeholder="Distance in miles"/>
   </div>
   <div class="col-md-4">
     <input type="text" class="form-control"
-      name="location" value="location" />
+      name="location" placeholder="location" />
   </div>
   <div class="col-md-4">
-    <span class="times form-control">(times)</span>
+    <span class="OT form-control">(OT)</span>
+    <span class="CT form-control">(CT)</span>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-2">
     <input type="text" class="form-control"
-     name="miles" value="Distance in miles"/>
+     name="miles" placeholder="Distance in miles"/>
   </div>
   <div class="col-md-4">
     <input type="text" class="form-control"
-      name="location" value="location" />
+      name="location" placeholder="location" />
   </div>
   <div class="col-md-4">
-    <span class="times form-control">(times)</span>
+    <span class="OT form-control">(OT)</span>
+    <span class="CT form-control">(CT)</span>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-2">
     <input type="text" class="form-control"
-     name="miles" value="Distance in miles"/>
+     name="miles" placeholder="Distance in miles"/>
   </div>
   <div class="col-md-4">
     <input type="text" class="form-control"
-      name="location" value="location" />
+      name="location" placeholder="location" />
   </div>
   <div class="col-md-4">
-    <span class="times form-control">(times)</span>
+    <span class="OT form-control">(OT)</span>
+    <span class="CT form-control">(CT)</span>
   </div>
 </div>
 </form>
@@ -106,8 +133,14 @@
           // ... execute this function
           function(){
               var e_miles = $(this).val();
+              var e_day = document.getElementById("day").value;
+              var e_time = document.getElementById("time").value;
+              var e_Brevet = document.getElementById("Brevet").value;
+              var e_dis_type = document.getElementById("dis_type").value;
 
-              var target = $(this).parents(".row").find(".times");
+
+              var open_target = $(this).parents(".row").find(".OT");
+              var close_target = $(this).parents(".row").find(".CT");
 
               // DEBUG: How do I replace the 'times' field?
               // alert("Content of the field I want to change: " +
@@ -116,12 +149,15 @@
               // AJAX request
               $.getJSON($SCRIPT_ROOT + '/_calc_times',
                   // The object to pass to the server
-                  { miles: e_miles },
+                  { miles: e_miles,day: e_day,time: e_time,Brevet:e_Brevet, dis_type:e_dis_type },
                   // The function to call with the response
                   function(data) {
                      var times = data.result;
+                     obj = JSON.parse(times);
+
                      // alert("Got a response: " +  times);
-                     target.text(times);
+                     open_target.text(obj.OT);
+                     close_target.text(obj.CT);
                   }); // End of the call to getJSON
           });  // End of the function to be called when field changes
               
